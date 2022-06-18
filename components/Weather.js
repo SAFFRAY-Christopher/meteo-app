@@ -19,14 +19,14 @@ export default function Weather({ forecast })  {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: "burlywood",
     height: 140,
     width: 75,
     paddingVertical:6,
     justifyContent:"center",
     alignItems:"center",
     marginRight: 10,
-    borderRadius: 50 
+    borderRadius: 50,
   },
   image: {
     width: 50,
