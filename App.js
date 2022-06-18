@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, ActivityIndicator, Image, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import axios from "axios";
@@ -9,7 +9,7 @@ import Search from "./components/Search"
 
 const API_URL_BY_COORDINATES = (lat, lon) => `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=8be68f1eb1b21fe99350af1b85024028&lang=fr&units=metric`
 
-const API_URL_BY_CITY = (city) => `api.openweathermap.org/data/2.5/forecast?q=${city}&appid=8be68f1eb1b21fe99350af1b85024028&lang=fr&units=metric`
+const API_URL_BY_CITY = (city) => `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=8be68f1eb1b21fe99350af1b85024028&lang=fr&units=metric`
 
 export default function App() {
 
@@ -24,7 +24,6 @@ export default function App() {
       if (status !== "granted") {
         return
       }
-      console.log(city)
       if (city == null) {
         const userLocation = await Location.getCurrentPositionAsync()
         getWeather(userLocation)
@@ -34,7 +33,7 @@ export default function App() {
     }
 
     getCoordinates()
-  }, [])
+  }, [city])
 
   const getWeather = async (location) => {
     try {
@@ -48,13 +47,12 @@ export default function App() {
   }
 
   async function searchCity() {
-    console.log(city)
     try {
       const response = await axios.get(API_URL_BY_CITY(city))
+      const {lat, lon} = response.data[0]
+      const weatherResponse= await axios.get(API_URL_BY_COORDINATES(lat, lon))
       setLoading(false)
-      console.log(response.data)
-      setData(response.data)
-
+      setData(weatherResponse.data);
     } catch (e) {
       console.error("Erreur dans searchCity: ", e.message)
     }
@@ -69,8 +67,11 @@ export default function App() {
   return (
 
     <View style={styles.container}>
-      <ScrollView>
-
+      <ScrollView
+        nestedScrollEnabled={true}
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <Search setCity={setCity} />
         <CurrentWeather data={data} />
         <Forecasts data={data} />
@@ -86,8 +87,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#E2E6E1',
     padding: 8,
+  },
+  scrollView : {
+    height: "100%",
   }
 
 });

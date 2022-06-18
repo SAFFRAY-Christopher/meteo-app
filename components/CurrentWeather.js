@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { isSameDay} from "date-fns"
 
 const getIcon = (icon) => `http://openweathermap.org/img/wn/${icon}@4x.png`
@@ -17,16 +17,16 @@ export default function CurrentWeather({ data })  {
 
   return (
       <View style={styles.container}>
-      <Text style={styles.city}>{data?.city?.name}</Text>
-      <Text style={styles.today}>Aujourd'hui</Text>
+        <Text style={styles.city}>{data?.city?.name}</Text>
+        <Text style={styles.today}>Aujourd'hui</Text>
 
-      <Image 
-      source={{ uri: getIcon(currentWeather?.weather[0].icon) }}
-      style={styles.image}
-      />
+        <Image 
+        source={{ uri: getIcon(currentWeather?.weather[0].icon) }}
+        style={styles.image}
+        />
 
-      <Text style={styles.temp}>{Math.round(currentWeather?.main.temp)}°C</Text>
-      <Text style={styles.description}>{currentWeather?.weather[0].description}</Text>
+        <Text style={styles.temp}>{Math.round(currentWeather?.main.temp)}°C</Text>
+        <Text style={styles.description}>{currentWeather?.weather[0].description}</Text>
       </View>
   )
 }
@@ -35,9 +35,8 @@ const COLOR = "#54565B"
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 60,
+    marginTop: 30,
     alignItems:"center",
-    height: "65%"
   },
   city: {
     fontSize: 36,

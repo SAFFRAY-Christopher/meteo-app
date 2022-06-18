@@ -36,10 +36,9 @@ export default function Forecasts({ data }) {
   }, [data])
   return (
     <ScrollView
-      horizontal
       showsHorizontalScrollIndicator={false}
       style={styles.scroll}
-
+      horizontal
     >
       {forecasts.map((f, index) => (
         <View key={index}>
@@ -57,18 +56,20 @@ export default function Forecasts({ data }) {
 const styles = StyleSheet.create({
   scroll: {
     width: 365,
-    height: "95%"
+    paddingTop: 40,
+    paddingBottom: 40,
+    marginTop: 50,
   },
   day: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
-    marginLeft: 5
+    marginLeft: 5,
   },
   container: {
     flexDirection: "row",
     marginLeft: 5,
-    marginRight: 15
+    marginRight: 15,
   }
 
 })
